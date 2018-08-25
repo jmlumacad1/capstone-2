@@ -7,31 +7,65 @@
 		global $conn; ?>
 		<div class="row">
 			<div class="col l2">
-				<form>
-					<h5>Sort by:</h5>
-					<h6>Order:</h6>
-					<h5>Filter by:</h5>
-					<div class="input-field col s12">
-				    <select multiple>
-				      <option value="" disabled>Choose your option</option>
-							<?php
-								$sql = "SELECT * FROM categorys";
-								$categorys = mysqli_query($conn, $sql);
-								foreach ($categorys as $category): ?>
-						      <option value=<?php echo $category['id'] ?>><?php echo $category['name'] ?></option>
-							<?php endforeach ?>
-				    </select>
-				    <label>Category</label>
-				  </div>
-					<button class="btn waves-effect waves-light" type="submit" name="action">Filter/Sort
-				    <!-- <i class="material-icons right">send</i> -->
-				  </button>
-				</form>
 			</div> <!-- end left col -->
 			<div class="col l10">
 				<div class="row">
+					<form>
+						<div class="input-field col s12 m6 l3">
+					    <select name="sort">
+					      <option value="" disabled selected></option>
+					      <option>name</option>
+					      <option>price</option>
+					    </select>
+					    <label>Sort by</label>
+					  </div>
+						<div class="input-field col s12 m6 l3">
+					    <select name="order">
+					      <option value="" disabled selected></option>
+					      <option>ascending</option>
+					      <option>descending</option>
+					    </select>
+					    <label>Order</label>
+					  </div>
+						<div class="input-field col s12 m6 l3">
+					    <select name="filter[]" multiple>
+					      <optgroup label="Subject">
+									<?php
+										$sql = "SELECT * FROM categorys";
+										$categorys = mysqli_query($conn, $sql);
+										foreach ($categorys as $category):
+											extract($category); ?>
+								      <option value=<?php echo $id ?>><?php echo $name ?></option>
+									<?php endforeach ?>
+					      </optgroup>
+					    </select>
+					    <label>Filter by</label>
+					  </div>
+					  <div class="col l3">
+							<button class="btn waves-effect waves-light" type="submit" name="action">Filter/Sort
+						    <!-- <i class="material-icons right">send</i> -->
+						  </button>
+					  </div>
+					</form>
+				</div> <!-- end row -->
+				<div class="row">
 					<?php
-						$sql = "SELECT * FROM items";
+						$sql_extension = '';
+						if (isset($_GET['filter'])) {
+							$filter = $_GET['filter'];
+							$sql_extension .= " WHERE category_id = ".$filter[0];
+							if (count($filter) > 1) {
+								for ($i=1; $i < count($filter); $i++) { 
+									$sql_extension .= " OR category_id = ".$filter[$i];
+								}
+							}
+						}
+						if (isset($_GET['sort']) && isset($_GET['order'])) {
+							$sort = " ORDER BY ".$_GET['sort'];
+							$order = $_GET['order'] == 'descending' ? " DESC" : "";
+							$sql_extension .= $sort.$order;
+						}
+						$sql = "SELECT * FROM items".$sql_extension;
 						$items = mysqli_query($conn, $sql);
 						foreach ($items as $item) {
 							extract($item); ?>

@@ -15,3 +15,5 @@ $('.cart_add').click(function() {
 		});
 	}
 });
+
+$(".dropdown_menu").dropdown();
