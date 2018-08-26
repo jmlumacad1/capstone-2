@@ -32,70 +32,79 @@ const requireField = function(selector) {
 	$(selector+' .helper-text').attr('data-error','This field is required.');
 };
 
-let errorFlag = false;
-$('#form-register #div-username #username').blur(function() {
-	const usernameSelector = '#form-register #div-username';
-	const username = $(usernameSelector+' #username').val();
-	if (username === '') {
-		requireField(usernameSelector);
-		setInvalid(usernameSelector+' #username');
-		errorFlag = true;
-	} else {
-		$.ajax({
-			url: 'controllers/username_check.php',
-			method: 'post',
-			data: {username: username}
-		}).done( data => {
-			errorFlag = (data === 'username already exists'); // use data.trim() instead of data if needed
-			if (errorFlag) {
-				$(usernameSelector+' .helper-text').attr('data-error','Username already exists.');
-				setInvalid(usernameSelector+' #username');
-			} else {
-				setValid(usernameSelector+' #username');
-			}
-		});
-	}
-});
-
-$('#form-register #div-password #password').blur(function() {
-	const passwordSelector = '#form-register #div-password';
-	const password = $(passwordSelector+' #password').val();
-	if (password === '') {
-		requireField(passwordSelector);
-		setInvalid(passwordSelector+' #password');
-		errorFlag = true;
-	} else {
-		setValid(passwordSelector+' #password');
-	}
-});
-
-$('#form-register #div-confirm-password #confirm-password').blur(function() {
-	const passwordSelector = '#form-register #div-password';
-	const confirmPasswordSelector = '#form-register #div-confirm-password';
-	const confirmPassword = $(confirmPasswordSelector+' #confirm-password').val();
-	if (confirmPassword !== $(passwordSelector+' #password').val()) {
-		$(confirmPasswordSelector+' .helper-text').attr('data-error','Passwords do not match.');
-		setInvalid(confirmPasswordSelector+' #confirm-password');
-		errorFlag = true;
-	} else if (confirmPassword === '') {
-		requireField(confirmPasswordSelector);
-		setInvalid(confirmPasswordSelector+' #confirm-password');
-		errorFlag = true;
-	} else {
-		setValid(confirmPasswordSelector+' #confirm-password');
-	}
-});
-
-$('#form-register').submit(function () {
-	let errorFlag1 = false;
-	const requiredFields = ['username','password','confirm-password'];
-	for (let requiredField of requiredFields) {
-		const currentField = '#form-register #'+ requiredField;
-		if ($(currentField).val() === '') {
-			requireField('#form-register #div-'+requiredField);
-			setInvalid(currentField);
-			errorFlag1 = true;
+const validateRegForm = function() {
+	const validateUsername = function() {
+		let errorFlag = false;
+		const usernameSelector = '#form-register #div-username';
+		const username = $(usernameSelector+' #username').val();
+		if (username === '') {
+			requireField(usernameSelector);
+			setInvalid(usernameSelector+' #username');
+			errorFlag = true;
+		} else {
+			$.ajax({
+				url: 'controllers/username_check.php',
+				method: 'post',
+				data: {username: username},
+				async: false
+			}).done( data => {
+				errorFlag = (data === 'username already exists'); // use data.trim() instead of data if needed
+				if (errorFlag) {
+					$(usernameSelector+' .helper-text').attr('data-error','Username already exists.');
+					setInvalid(usernameSelector+' #username');
+				} else {
+					setValid(usernameSelector+' #username');
+				}
+			});
 		}
-	}
-	return !errorFlag && !errorFlag1;
-});
+		return errorFlag;
+	};
+
+	const validatePassword = function() {
+		let errorFlag = false;
+		const passwordSelector = '#form-register #div-password';
+		const password = $(passwordSelector+' #password').val();
+		if (password === '') {
+			requireField(passwordSelector);
+			setInvalid(passwordSelector+' #password');
+			errorFlag = true;
+		} else {
+			setValid(passwordSelector+' #password');
+		}
+
+		return errorFlag;
+	};
+
+	const validateConfirmPassword = function() {
+		let errorFlag = false;
+		const passwordSelector = '#form-register #div-password';
+		const confirmPasswordSelector = '#form-register #div-confirm-password';
+		const confirmPassword = $(confirmPasswordSelector+' #confirm-password').val();
+		if (confirmPassword !== $(passwordSelector+' #password').val()) {
+			$(confirmPasswordSelector+' .helper-text').attr('data-error','Passwords do not match.');
+			setInvalid(confirmPasswordSelector+' #confirm-password');
+			errorFlag = true;
+		} else if (confirmPassword === '') {
+			requireField(confirmPasswordSelector);
+			setInvalid(confirmPasswordSelector+' #confirm-password');
+			errorFlag = true;
+		} else {
+			setValid(confirmPasswordSelector+' #confirm-password');
+		}
+
+		return errorFlag;
+	};
+
+	$('#form-register #div-username #username').blur(validateUsername);
+	$('#form-register #div-password #password').blur(validatePassword);
+	$('#form-register #div-confirm-password #confirm-password').blur(validateConfirmPassword);
+	$('#form-register').submit(function() {
+		let res = true;
+		const b = [validateUsername,validatePassword,validateConfirmPassword];
+		for (var i = 0; i < b.length; i++) {
+			res = !b[i]() && res;
+		}
+		return res;
+	});
+};
+validateRegForm();

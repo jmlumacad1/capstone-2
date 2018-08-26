@@ -20,11 +20,11 @@
 		<form id="form-login" action="controllers/authenticate.php" method="post">
 			<div class="row">
 			  <div class="input-field col s12">
-			    <input id="username" type="text" class="validate">
+			    <input name="username" id="username" type="text">
 			    <label for="username">Username</label>
 			  </div>
 			  <div class="input-field col s12">
-			    <input id="password" type="password" class="validate">
+			    <input name="password" id="password" type="password">
 			    <label for="password">Password</label>
 			  </div>
 			  <div class="col s12">
