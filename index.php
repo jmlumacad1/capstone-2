@@ -86,10 +86,10 @@
 										</div>
 										<a class="waves-effect waves-light btn cart_add" data-id=<?php echo $id; ?>><i class="material-icons left">add_shopping_cart</i>Add to Cart</a>
 									</div>
-								</div>
-							</div>
+								</div> <!-- end card -->
+							</div> <!-- end col -->
 					<?php } ?>
-				</div>
+				</div> <!-- end row -->
 			</div> <!-- end right col -->
 		</div> <!-- end row -->
 <?php } require_once 'template.php'; ?>

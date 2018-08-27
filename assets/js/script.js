@@ -108,3 +108,24 @@ const validateRegForm = function() {
 	});
 };
 validateRegForm();
+
+$('#cart-empty').click(function() {
+	$.ajax({
+		method: 'post',
+		url: 'cart_list.php',
+		data: { cart_empty: true }
+	}).done(function() {
+		location.reload();
+	});
+});
+
+$('.cart-remove').click(function() {
+	const id = $(this).data('id');
+	$.ajax({
+		method: 'post',
+		url: 'cart_list.php',
+		data: { cart_remove: id }
+	}).done(function() {
+		location.reload();
+	});
+});
