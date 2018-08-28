@@ -9,7 +9,11 @@
 		<a href="index.php" class="brand-logo">Logo</a>
 		<ul class="right hide-on-med-and-down">
 			<?php if (!isset($logged_in) || (isset($logged_in) && $logged_in['role_id'] != 1)): ?>
-				<li><a href="cart_list.php">Cart<span class="new badge" data-badge-caption="items">2</span></a></li>
+				<li><a href="cart_list.php">Cart<?php 
+				if (isset($_SESSION['cart'])) {
+					$items = array_sum($_SESSION['cart']); ?>
+					<span id="badge-items" class="new badge" data-badge-caption=<?php echo $items == 1 ? "item" : "items"; ?>><?php echo $items; ?></span><?php
+				} ?></a></li>
 			<?php endif ?>
 			<?php if (isset($logged_in)): ?>
 				<li><a href="logout.php">Logout</a></li>

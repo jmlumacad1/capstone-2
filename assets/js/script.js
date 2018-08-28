@@ -150,3 +150,7 @@ const validateRegForm = function() {
 	});
 };
 validateRegForm();
+
+const addMoreToCart = function(numberOfAdditionalItems) {
+	const prev = $('#badge-items').html()
+};
