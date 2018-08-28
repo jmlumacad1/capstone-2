@@ -1,4 +1,9 @@
 <?php session_start(); ?>
+<?php
+	if (isset($_SESSION['logged_in'])) {
+		$logged_in = $_SESSION['logged_in'];
+	}
+?>
 <?php require 'controllers/connect.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
