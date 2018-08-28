@@ -13,9 +13,51 @@ $('.cart_add').click(function() {
 			{ id: id, quantity: quantity },
 			function(data) {
 				M.toast({html: 'Added to cart successfully!'});
-				console.log(data);
+				// console.log(data);
 		});
 	}
+});
+
+$('.cart-update').click(function() {
+	const id = $(this).data("id");
+	const quantity = Number($(this).prev().val());
+	if (quantity <= 0 || !Number.isInteger(quantity)) {
+		alert('Please enter a positive integer.')
+	} else {
+		$.post('controllers/cart_update.php',
+			{ id: id, quantity: quantity },
+			function(data) {
+				M.toast({html: 'Updated cart successfully!'});
+				// console.log(data);
+				const price = $('#price'+id).html();
+				const prevQuantity = $('#quantity'+id).html();
+				const prevTotal = $('#total').html();
+				$('#quantity'+id).html(quantity);
+				$('#subtotal'+id).html(quantity*price);
+				$('#total').html(prevTotal - price*prevQuantity + price*quantity)
+		});
+	}
+});
+
+$('#cart-empty').click(function() {
+	$.ajax({
+		method: 'post',
+		url: 'cart_list.php',
+		data: { cart_empty: true }
+	}).done(function() {
+		location.reload();
+	});
+});
+
+$('.cart-remove').click(function() {
+	const id = $(this).data('id');
+	$.ajax({
+		method: 'post',
+		url: 'cart_list.php',
+		data: { cart_remove: id }
+	}).done(function() {
+		location.reload();
+	});
 });
 
 const setValid = function(selector) {
@@ -108,24 +150,3 @@ const validateRegForm = function() {
 	});
 };
 validateRegForm();
-
-$('#cart-empty').click(function() {
-	$.ajax({
-		method: 'post',
-		url: 'cart_list.php',
-		data: { cart_empty: true }
-	}).done(function() {
-		location.reload();
-	});
-});
-
-$('.cart-remove').click(function() {
-	const id = $(this).data('id');
-	$.ajax({
-		method: 'post',
-		url: 'cart_list.php',
-		data: { cart_remove: id }
-	}).done(function() {
-		location.reload();
-	});
-});

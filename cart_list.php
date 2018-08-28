@@ -35,12 +35,13 @@
 						      <div class="card-stacked">
 						        <div class="card-content">
 						        	<h6><?php echo $item['name'] ?></h6>
-						        	<p>Price: <?php echo $item['price'] ?></p>
-						          <p>Quantity: <?php echo $quantity ?> | <a href="#">edit</a></p>
-						          <p>Subtotal: <?php
+						        	<p>Price: <span id=<?php echo "price$id" ?>><?php echo $item['price'] ?></span></p>
+						          <p>Quantity: <span id=<?php echo "quantity$id" ?>><?php echo $quantity ?></span> | <input type="number" min="1" class="browser-default" placeholder="Update quantity here."> <a class="cart-update" data-id=<?php echo $item['id'] ?>>update</a></p>
+						          <!-- <p>Quantity: <?php //echo $quantity ?> | <a href="#">edit</a></p> -->
+						          <p>Subtotal: <span id=<?php echo "subtotal$id" ?>><?php
 						          	$subtotal = $item['price']*$quantity;
 						          	$total += $subtotal;
-						          	echo $subtotal; ?></p>
+						          	echo $subtotal; ?></span></p>
 						        </div>
 						        <div class="card-action">
 						          <a href="#" class="cart-remove" data-id=<?php echo $id ?>>Remove from cart</a>
@@ -50,7 +51,7 @@
 						  </div><?php
 					} ?>
 					</div>
-					<p>Total: <?php echo $total ?></p>
+					<p>Total: <span id="total"><?php echo $total ?></span></p>
 				</div>
 			</div><?php
 		} else {

@@ -10,4 +10,4 @@ if (isset($_SESSION['cart'][$id])) {
 	$_SESSION['cart'][$id] = $quantity;
 }
 
-print_r($_SESSION['cart']);
+echo count($_SESSION['cart']);
