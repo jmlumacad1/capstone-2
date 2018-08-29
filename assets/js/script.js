@@ -1,6 +1,7 @@
 // materialize js initializations
 $(".dropdown_menu").dropdown();
 $('select').formSelect();
+$('.modal').modal();
 
 $('.cart_add').click(function() {
 	const id = $(this).data("id");
@@ -154,3 +155,19 @@ validateRegForm();
 const addMoreToCart = function(numberOfAdditionalItems) {
 	const prev = $('#badge-items').html()
 };
+
+$('.admin-btn-delete-item').click(function() {
+	const id = $(this).data('id');
+	$.ajax({
+		url: 'controllers/admin_item_delete.php',
+		method: 'post',
+		data: { id: id },
+		success: function() {
+			location.reload();
+		}
+	});
+});
+
+$('#admin-btn-add-item').click(function() {
+	$('#admin-form-add-item').submit();
+});
