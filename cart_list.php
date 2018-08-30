@@ -52,6 +52,7 @@
 					} ?>
 					</div>
 					<p>Total: <span id="total"><?php echo $total ?></span></p>
+					<a href="controllers/checkout.php" class="btn blue">Pay with Paypal</a>
 				</div>
 			</div><?php
 		} else {

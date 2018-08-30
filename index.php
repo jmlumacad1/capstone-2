@@ -3,20 +3,76 @@
 		echo 'Home';
 	}
 
-	function admin_get_modal_add_item($conn) { ?>
-		<!-- Modal Trigger -->
-	  <button data-target="modal1" class="btn modal-trigger">Add item</button>
-
-	  <!-- Modal Structure -->
-	  <div id="modal1" class="modal">
+	function admin_get_modal_structure_item($conn,$mode) { ?>
+		<!-- Modal Structure -->
+	  <div id="modal-<?php echo $mode; ?>" class="modal">
 	    <div class="modal-content">
-	      <h4>Add new item</h4>
-	      <?php require_once 'partials/item_form.php'; ?>
+	      <h4><?php echo ($mode === 'add') ? 'Add new item' : 'Edit item' ; ?></h4>
+	      <div class="row">
+					<form id="admin-form-<?php echo $mode; ?>-item" class="col s12" action="controllers/admin_item_<?php echo $mode; ?>.php" method="post" enctype="multipart/form-data">
+						<div class="row">
+							<div class="input-field col s12 m6">
+								<input name="item_name" id="item_name" type="text" class="validate">
+								<label for="item_name">Item name</label>
+							</div>
+							<div class="input-field col s12 m6">
+								<input name="item_price" id="item_price" type="number" class="validate">
+								<label for="item_price">Item price</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<select name="item_category_id">
+									<option value="" disabled selected>Choose your option</option>
+									<?php
+										$sql = "SELECT * FROM categorys";
+										$categorys = mysqli_query($conn, $sql);
+										foreach ($categorys as $category):
+											extract($category); ?>
+								      <option value=<?php echo $id ?>><?php echo $name ?></option>
+									<?php endforeach ?>
+								</select>
+								<label>Item category</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<textarea name="item_description" id="item_description" class="materialize-textarea"></textarea>
+								<label for="item_description">Item description</label>
+							</div>
+						</div>
+						<div class="row">
+								<div class="file-field input-field col s12">
+									<div class="btn">
+										<span>Image</span>
+										<input name="item_image" type="file">
+									</div>
+									<div class="file-path-wrapper">
+										<input class="file-path validate" type="text">
+									</div>
+								</div>
+						</div>
+					</form>
+				</div>
 	    </div>
 	    <div class="modal-footer">
-	      <button id="admin-btn-add-item" class="modal-close waves-effect waves-green btn-flat">Add to Database</button>
+	      <button id="admin-btn-<?php echo $mode; ?>-item" class="modal-close waves-effect waves-green btn-flat"><?php echo ($mode === 'add') ? 'Add to Database' : 'Save' ; ?></button>
 	    </div>
 	  </div><?php
+	}
+
+	function admin_get_modal_add_item($conn) {
+	  $mode = 'add'; ?>
+		<!-- Modal Trigger -->
+	  <button data-target="modal-<?php echo $mode; ?>" class="btn modal-trigger">Add item</button>
+
+	  <?php admin_get_modal_structure_item($conn,$mode);
+	}
+
+	function admin_get_modal_edit_item($conn) {
+	  $mode = 'edit'; ?>
+
+	  <?php admin_get_modal_structure_item($conn,$mode);
 	}
 
 	function get_content_section_sort_and_filter($conn) { ?>
@@ -81,6 +137,7 @@
 		<div class="col s12">
 			<?php if (isset($logged_in) && $logged_in['role_id'] == 1): ?>
 				<?php admin_get_modal_add_item($conn); ?>
+				<?php admin_get_modal_edit_item($conn); ?>
 			<?php endif ?>
 		</div>
 		<?php
@@ -104,8 +161,8 @@
 							</div>
 							<a class="waves-effect waves-light btn cart_add" data-id=<?php echo $id; ?>><i class="material-icons left">add_shopping_cart</i>Add to Cart</a>
 						<?php else: ?>
-							<button data-id=<?php echo $id ?> class="admin-btn-edit-item btn waves-effect waves-light">Edit</button>
-							<button data-id=<?php echo $id ?> class="admin-btn-delete-item btn waves-effect waves-light">Delete</button>
+							<button data-target="modal-edit" data-id=<?php echo $id ?> class="admin-btn-edit-item btn waves-effect waves-light modal-trigger">Edit</button>
+							<button disabled data-id=<?php echo $id ?> class="admin-btn-delete-item btn waves-effect waves-light">Delete</button>
 						<?php endif ?>
 					</div>
 				</div> <!-- end card -->
