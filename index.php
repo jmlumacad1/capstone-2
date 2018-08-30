@@ -3,9 +3,7 @@
 		echo 'Home';
 	}
 
-	function admin_get_modal_structure_item($conn,$mode) { ?>
-		<!-- Modal Structure -->
-	  <div id="modal-<?php echo $mode; ?>" class="modal">
+	function foo($conn,$mode) { ?>
 	    <div class="modal-content">
 	      <h4><?php echo ($mode === 'add') ? 'Add new item' : 'Edit item' ; ?></h4>
 	      <div class="row">
@@ -23,7 +21,7 @@
 						<div class="row">
 							<div class="input-field col s12">
 								<select name="item_category_id">
-									<option value="" disabled selected>Choose your option</option>
+									<option value="" disabled<?php echo ($mode === 'add') ? ' selected' : '' ; ?>>Choose your option</option>
 									<?php
 										$sql = "SELECT * FROM categorys";
 										$categorys = mysqli_query($conn, $sql);
@@ -57,7 +55,13 @@
 	    </div>
 	    <div class="modal-footer">
 	      <button id="admin-btn-<?php echo $mode; ?>-item" class="modal-close waves-effect waves-green btn-flat"><?php echo ($mode === 'add') ? 'Add to Database' : 'Save' ; ?></button>
-	    </div>
+	    </div><?php
+	}
+
+	function admin_get_modal_structure_item($conn,$mode) { ?>
+		<!-- Modal Structure -->
+	  <div id="modal-<?php echo $mode; ?>" class="modal">
+	  	<?php foo($conn,$mode); ?>
 	  </div><?php
 	}
 
@@ -161,7 +165,7 @@
 							</div>
 							<a class="waves-effect waves-light btn cart_add" data-id=<?php echo $id; ?>><i class="material-icons left">add_shopping_cart</i>Add to Cart</a>
 						<?php else: ?>
-							<button data-target="modal-edit" data-id=<?php echo $id ?> class="admin-btn-edit-item btn waves-effect waves-light modal-trigger">Edit</button>
+							<button data-item='<?php echo(json_encode($item)) ?>' data-target="modal-edit" data-id=<?php echo $id ?> class="admin-btn-edit-item btn waves-effect waves-light modal-trigger">Edit</button>
 							<button disabled data-id=<?php echo $id ?> class="admin-btn-delete-item btn waves-effect waves-light">Delete</button>
 						<?php endif ?>
 					</div>
