@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 31, 2018 at 10:36 AM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.4
+-- Generation Time: Aug 28, 2018 at 02:18 PM
+-- Server version: 10.1.34-MariaDB
+-- PHP Version: 7.2.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -63,9 +63,9 @@ CREATE TABLE `items` (
 
 INSERT INTO `items` (`id`, `name`, `description`, `price`, `image`, `category_id`) VALUES
 (1, 'University Physics', 'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/University_Physics.jpeg/220px-University_Physics.jpeg', '1200.00', 'assets/images/University_Physics.jpeg', 3),
-(2, 'The Calculus 7', 'lorem', '700.00', 'assets/images/the_calculus_7.jpg', 1),
-(3, 'Principles of General Chemistry', 'lorem ipsum', '600.00', 'assets/images/principles_of_general_chemistry.jpg', 2),
-(4, 'Fundamentals of Organic Chemistry', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit..', '800.00', 'assets/images/fundamentals_of_organic_chemistry.jpg', 2),
+(2, 'The Calculus 7', 'lorem', '700.00', '', 1),
+(3, 'Principles of General Chemistry', 'lorem ipsum dolor', '600.00', '', 2),
+(4, 'Fundamentals of Organic Chemistry', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic, ea exercitationem vel perferendis fuga reprehenderit, iure officiis, enim similique aut expedita. Soluta expedita quasi aliquid itaque, autem accusantium vero placeat.', '800.00', '', 2),
 (7, 'College Algebra and Trigonometry', 'math', '750.00', 'assets/images/college_algebra_and_trigonometry.jpg', 1);
 
 -- --------------------------------------------------------
@@ -78,21 +78,12 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `transaction_code` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `contact_number` varchar(255) DEFAULT NULL,
+  `contact_number` varchar(255) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id` int(11) DEFAULT NULL,
-  `status_id` int(11) NOT NULL DEFAULT '1',
+  `status_id` int(11) NOT NULL,
   `payment_method_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `transaction_code`, `address`, `contact_number`, `date_created`, `user_id`, `status_id`, `payment_method_id`) VALUES
-(2, '5b878cf66f14e', '1 Main St San Jose CA 95131 US', NULL, '2018-08-30 06:22:04', 8, 1, 2),
-(3, '5b87ad0e4d303', '1 Main St San Jose CA 95131 US', NULL, '2018-08-30 08:39:15', 8, 1, 2),
-(4, '5b88cdc83537c', '1 Main St San Jose CA 95131 US', NULL, '2018-08-31 05:11:12', 8, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -107,17 +98,6 @@ CREATE TABLE `order_details` (
   `order_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `order_details`
---
-
-INSERT INTO `order_details` (`id`, `item_id`, `quantity`, `order_id`) VALUES
-(1, 2, 2, 2),
-(2, 3, 1, 2),
-(3, 2, 1, 3),
-(4, 3, 1, 3),
-(5, 2, 1, 4);
-
 -- --------------------------------------------------------
 
 --
@@ -128,14 +108,6 @@ CREATE TABLE `payment_methods` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `payment_methods`
---
-
-INSERT INTO `payment_methods` (`id`, `name`) VALUES
-(1, 'C.O.D.'),
-(2, 'PayPal');
 
 -- --------------------------------------------------------
 
@@ -167,15 +139,6 @@ CREATE TABLE `statuss` (
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `statuss`
---
-
-INSERT INTO `statuss` (`id`, `name`) VALUES
-(3, 'Delivered'),
-(2, 'In Transit'),
-(1, 'Processing');
-
 -- --------------------------------------------------------
 
 --
@@ -194,8 +157,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `role_id`) VALUES
-(7, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1),
-(8, 'user', '12dea96fec20593566ab75692c9949596833adc9', 2);
+(1, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 1),
+(11, 'user', '12dea96fec20593566ab75692c9949596833adc9', 2),
+(13, 'user1', 'b3daa77b4c04a9551b8781d03191fe098f325e67', 2),
+(14, 'user2', 'a1881c06eec96db9901c7bbfe41c42a3f08e9cb4', 2),
+(15, 'user3', '0b7f849446d3383546d15a480966084442cd2193', 2),
+(19, 'user9', '12dea96fec20593566ab75692c9949596833adc9', 2),
+(47, 'user10', '12dea96fec20593566ab75692c9949596833adc9', 2),
+(48, 'user8', '12dea96fec20593566ab75692c9949596833adc9', 2);
 
 -- --------------------------------------------------------
 
@@ -293,7 +262,7 @@ ALTER TABLE `user_details`
 -- AUTO_INCREMENT for table `categorys`
 --
 ALTER TABLE `categorys`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `items`
@@ -305,19 +274,19 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `payment_methods`
 --
 ALTER TABLE `payment_methods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -329,13 +298,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `statuss`
 --
 ALTER TABLE `statuss`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `user_details`
