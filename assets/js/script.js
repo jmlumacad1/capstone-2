@@ -172,25 +172,35 @@ $('#admin-btn-add-item').click(function() {
 	$('#admin-form-add-item').submit();
 });
 
+// $('.admin-btn-edit-item').click(function() {
+// 	const id = $(this).data('id');
+// 	const item = $(this).data('item');
+// 	$.ajax({
+// 		url: 'controllers/admin_item_form_show.php',
+// 		method: 'post',
+// 		data: item,
+// 		success: function(data) {
+// 			$('#modal-edit').html(data);
+// 		}
+// 	});
+// 	console.log(item);
+// 	for (let key in item) {
+// 		if (key != 'image') {
+// 			if (key == 'category_id') {
+// 				// $(`[name="item_${key}"] [value="${item[key]}"]`).attr('selected','selected');
+// 				$(`[name="item_${key}"]`).val(item[key]);
+// 			} else {
+// 				$(`[name="item_${key}"]`).val(item[key]);
+// 			}
+// 			$(`[name="item_${key}"]`).next().addClass('active');
+// 		}
+// 	}
+// 	const action = $('#admin-form-edit-item').attr('action');
+// 	$('#admin-form-edit-item').attr('action',`${action}?id=${id}`);
+// });
+
 $('.admin-btn-edit-item').click(function() {
 	const id = $(this).data('id');
-	const item = $(this).data('item');
-	console.log(item);
-	for (let key in item) {
-		if (key != 'image') {
-			if (key == 'category_id') {
-				$(`[name="item_${key}"] [value="${item[key]}"]`).attr('selected','true');
-			} else {
-				$(`[name="item_${key}"]`).val(item[key]);
-			}
-			$(`[name="item_${key}"]`).next().addClass('active');
-		}
-	}
-	const action = $('#admin-form-edit-item').attr('action');
-	$('#admin-form-edit-item').attr('action',`${action}?id=${id}`);
-});
-
-$('#admin-btn-edit-item').click(function() {
-	$('#admin-form-edit-item').submit();
+	$('#admin-form-edit-item'+id).submit();
 	// location.reload();
 });

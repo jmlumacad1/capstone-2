@@ -40,7 +40,8 @@ try {
 	die();
 }
 
-$sql = "INSERT INTO orders (id, transaction_code, user_id, address, contact_number, status_id, date_created, payment_method_id) VALUES(null,'$invoice_number',8,'$address',null,1,null,2)";
+$user_id = $_SESSION['logged_in']['id'];
+$sql = "INSERT INTO orders (id, transaction_code, user_id, address, contact_number, status_id, date_created, payment_method_id) VALUES(null,'$invoice_number',$user_id,'$address',null,1,null,2)";
 mysqli_query($conn,$sql) or die(mysqli_error($conn));
 $order_id = mysqli_insert_id($conn);
 

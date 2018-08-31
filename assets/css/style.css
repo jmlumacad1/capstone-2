@@ -1,3 +1,11 @@
 a {
 	cursor: pointer;
 }
+
+.card.l1,.card.l2,.card.l3,.card.l4,.card.l5,.card.l6,.card.l7,.card.l8,.card.l9,.card.l10,.card.l11,.card.l12 {
+	/*height: 500px;*/
+}
+
+.card-image.l1,.card-image.l2,.card-image.l3,.card-image.l4,.card-image.l5,.card-image.l6,.card-image.l7,.card-image.l8,.card-image.l9,.card-image.l10,.card-image.l11,.card-image.l12 {
+	/*height: 320px;*/
+}

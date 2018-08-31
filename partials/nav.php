@@ -14,6 +14,8 @@
 					$items = array_sum($_SESSION['cart']); ?>
 					<span id="badge-items" class="new badge" data-badge-caption=<?php echo $items == 1 ? "item" : "items"; ?>><?php echo $items; ?></span><?php
 				} ?></a></li>
+			<?php else: ?>
+				<li><a href="orders.php">Orders</a></li>
 			<?php endif ?>
 			<?php if (isset($logged_in)): ?>
 				<li><a href="logout.php">Logout</a></li>

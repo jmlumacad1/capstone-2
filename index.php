@@ -3,7 +3,9 @@
 		echo 'Home';
 	}
 
-	function foo($conn,$mode) { ?>
+	function admin_get_modal_structure_item($conn,$mode) { ?>
+		<!-- Modal Structure -->
+	  <div id="modal-<?php echo $mode; ?>" class="modal">
 	    <div class="modal-content">
 	      <h4><?php echo ($mode === 'add') ? 'Add new item' : 'Edit item' ; ?></h4>
 	      <div class="row">
@@ -21,7 +23,7 @@
 						<div class="row">
 							<div class="input-field col s12">
 								<select name="item_category_id">
-									<option value="" disabled<?php echo ($mode === 'add') ? ' selected' : '' ; ?>>Choose your option</option>
+									<option value="" disabled selected>Choose your option</option>
 									<?php
 										$sql = "SELECT * FROM categorys";
 										$categorys = mysqli_query($conn, $sql);
@@ -55,13 +57,7 @@
 	    </div>
 	    <div class="modal-footer">
 	      <button id="admin-btn-<?php echo $mode; ?>-item" class="modal-close waves-effect waves-green btn-flat"><?php echo ($mode === 'add') ? 'Add to Database' : 'Save' ; ?></button>
-	    </div><?php
-	}
-
-	function admin_get_modal_structure_item($conn,$mode) { ?>
-		<!-- Modal Structure -->
-	  <div id="modal-<?php echo $mode; ?>" class="modal">
-	  	<?php foo($conn,$mode); ?>
+	    </div>
 	  </div><?php
 	}
 
@@ -73,10 +69,65 @@
 	  <?php admin_get_modal_structure_item($conn,$mode);
 	}
 
-	function admin_get_modal_edit_item($conn) {
+	function admin_get_modal_edit_item($conn,$item) {
 	  $mode = 'edit'; ?>
-
-	  <?php admin_get_modal_structure_item($conn,$mode);
+		<!-- Modal Structure -->
+	  <div id="modal-<?php echo $mode; ?><?php echo $item['id'] ?>" class="modal">
+	    <div class="modal-content">
+	      <h4><?php echo ($mode === 'add') ? 'Add new item' : 'Edit item' ; ?></h4>
+	      <div class="row">
+					<form id="admin-form-<?php echo $mode; ?>-item<?php echo $item['id'] ?>" class="col s12" action="controllers/admin_item_<?php echo $mode; ?>.php?id=<?php echo $item['id'] ?>" method="post" enctype="multipart/form-data">
+						<div class="row">
+							<div class="input-field col s12 m6">
+								<input value="<?php echo($item['name']) ?>" name="item_name" id="item_name" type="text" class="validate">
+								<label for="item_name">Item name</label>
+							</div>
+							<div class="input-field col s12 m6">
+								<input value="<?php echo($item['price']) ?>" name="item_price" id="item_price" type="number" class="validate">
+								<label for="item_price">Item price</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<select name="item_category_id">
+									<option value="" disabled>Choose your option</option>
+									<?php
+										$sql = "SELECT * FROM categorys";
+										$categorys = mysqli_query($conn, $sql);
+										foreach ($categorys as $category):
+											extract($category); ?>
+								      <option value=<?php echo $id ?><?php if ($id == $item['category_id']) {
+								      	echo " selected";
+								      } ?>><?php echo $name ?></option>
+									<?php endforeach ?>
+								</select>
+								<label>Item category</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<textarea name="item_description" id="item_description" class="materialize-textarea"><?php echo $item['description']; ?></textarea>
+								<label for="item_description">Item description</label>
+							</div>
+						</div>
+						<div class="row">
+								<div class="file-field input-field col s12">
+									<div class="btn">
+										<span>Image</span>
+										<input name="item_image" type="file">
+									</div>
+									<div class="file-path-wrapper">
+										<input class="file-path validate" type="text">
+									</div>
+								</div>
+						</div>
+					</form>
+				</div>
+	    </div>
+	    <div class="modal-footer">
+	      <button data-id="<?php echo $item['id'] ?>" class="admin-btn-<?php echo $mode; ?>-item modal-close waves-effect waves-green btn-flat"><?php echo ($mode === 'add') ? 'Add to Database' : 'Save' ; ?></button>
+	    </div>
+	  </div><?php
 	}
 
 	function get_content_section_sort_and_filter($conn) { ?>
@@ -141,21 +192,20 @@
 		<div class="col s12">
 			<?php if (isset($logged_in) && $logged_in['role_id'] == 1): ?>
 				<?php admin_get_modal_add_item($conn); ?>
-				<?php admin_get_modal_edit_item($conn); ?>
 			<?php endif ?>
 		</div>
 		<?php
 		foreach ($items as $item) {
 			extract($item); ?>
 			<div class="col s12 m6 l3">
-				<div class="card">
+				<div class="card large">
 					<div class="card-image">
 						<img src="<?php echo $image; ?>">
 					</div>
 					<div class="card-content">
 						<span class="card-title"><?php echo $name; ?></span>
 						<span><?php echo $price; ?></span>
-						<p>some description</p>
+						<!-- <p>some description</p> -->
 					</div>
 					<div class="card-action">
 						<?php if (!isset($logged_in) || (isset($logged_in) && $logged_in['role_id'] != 1)): ?>
@@ -165,8 +215,9 @@
 							</div>
 							<a class="waves-effect waves-light btn cart_add" data-id=<?php echo $id; ?>><i class="material-icons left">add_shopping_cart</i>Add to Cart</a>
 						<?php else: ?>
-							<button data-item='<?php echo(json_encode($item)) ?>' data-target="modal-edit" data-id=<?php echo $id ?> class="admin-btn-edit-item btn waves-effect waves-light modal-trigger">Edit</button>
+							<button data-item='<?php echo json_encode($item) ?>' data-target="modal-edit<?php echo $id ?>" data-id=<?php echo $id ?> class="btn waves-effect waves-light modal-trigger">Edit</button>
 							<button disabled data-id=<?php echo $id ?> class="admin-btn-delete-item btn waves-effect waves-light">Delete</button>
+							<?php admin_get_modal_edit_item($conn,$item); ?>
 						<?php endif ?>
 					</div>
 				</div> <!-- end card -->
