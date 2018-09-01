@@ -41,7 +41,8 @@ try {
 }
 
 $user_id = $_SESSION['logged_in']['id'];
-$sql = "INSERT INTO orders (id, transaction_code, user_id, address, contact_number, status_id, date_created, payment_method_id) VALUES(null,'$invoice_number',$user_id,'$address',null,1,null,2)";
+$total_price = $_SESSION['total_price'];
+$sql = "INSERT INTO orders (id, transaction_code, user_id, address, contact_number, status_id, date_created, payment_method_id, total_price) VALUES(null,'$invoice_number',$user_id,'$address',null,1,null,2,$total_price)";
 mysqli_query($conn,$sql) or die(mysqli_error($conn));
 $order_id = mysqli_insert_id($conn);
 
@@ -49,6 +50,9 @@ foreach($_SESSION['cart'] as $id => $quantity) {
 	$sql = "INSERT INTO order_details VALUES(null,$id,$quantity,$order_id)";
 	mysqli_query($conn,$sql) or die(mysqli_error($conn));
 }
+
+$sql = "INSERT INTO orders_statuss VALUES(null,$order_id,1,null)";
+mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 unset($_SESSION['cart']);
 $_SESSION['success_message'] = "Payment Successful!";

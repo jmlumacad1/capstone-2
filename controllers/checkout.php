@@ -50,7 +50,7 @@ $transaction = new Transaction();
 $transaction
 	->setAmount($amount)
 	->setItemList($item_list)
-	->setDescription('payment for MySuperHeroes purchase')
+	->setDescription('payment for books purchase')
 	->setInvoiceNumber(uniqid());
 
 $redirectUrls = new RedirectUrls();

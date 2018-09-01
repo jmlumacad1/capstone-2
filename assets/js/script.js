@@ -2,6 +2,16 @@
 $(".dropdown_menu").dropdown();
 $('select').formSelect();
 $('.modal').modal();
+$('.collapsible').collapsible();
+
+const updateCartBadge = function() {
+	$.ajax({
+		url: 'controllers/update_cart_badge.php',
+		success : function(data) {
+			$('#badge-items').html(data);
+		}
+	});
+};
 
 $('.cart_add').click(function() {
 	const id = $(this).data("id");
@@ -14,6 +24,7 @@ $('.cart_add').click(function() {
 			{ id: id, quantity: quantity },
 			function(data) {
 				M.toast({html: 'Added to cart successfully!'});
+				updateCartBadge();
 				// console.log(data);
 		});
 	}
@@ -35,7 +46,8 @@ $('.cart-update').click(function() {
 				const prevTotal = $('#total').html();
 				$('#quantity'+id).html(quantity);
 				$('#subtotal'+id).html(quantity*price);
-				$('#total').html(prevTotal - price*prevQuantity + price*quantity)
+				$('#total').html(prevTotal - price*prevQuantity + price*quantity);
+				updateCartBadge();
 		});
 	}
 });
@@ -152,10 +164,6 @@ const validateRegForm = function() {
 };
 validateRegForm();
 
-const addMoreToCart = function(numberOfAdditionalItems) {
-	const prev = $('#badge-items').html()
-};
-
 $('.admin-btn-delete-item').click(function() {
 	const id = $(this).data('id');
 	$.ajax({
@@ -203,4 +211,30 @@ $('.admin-btn-edit-item').click(function() {
 	const id = $(this).data('id');
 	$('#admin-form-edit-item'+id).submit();
 	// location.reload();
+});
+
+$('.admin-select-order-status').change(function() {
+	const orderID = $(this).data('order-id');
+	const statusID = $(this).val();
+	alert('changing status...');
+	$.ajax({
+		url: 'controllers/admin_change_order_status.php',
+		data: { order_id: orderID, status_id: statusID },
+		method: 'post',
+		success: function(data) {
+			$(`select[data-order-id="${orderID}"] [value="${statusID}"]`).prevAll().attr('disabled','disabled');
+		}
+	});
+});
+
+$('[href="#view-order-details"]').click(function() {
+	const orderID = $(this).data('order-id');
+	$.ajax({
+		url: 'controllers/admin_view_order_details.php',
+		data: { order_id: orderID },
+		method: 'post',
+		success: function(data) {
+			$('#view-order-details .modal-content').html(data);
+		}
+	});
 });
