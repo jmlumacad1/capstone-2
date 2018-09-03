@@ -4,10 +4,17 @@ $('select').formSelect();
 $('.modal').modal();
 $('.collapsible').collapsible();
 $('.sidenav').sidenav();
+$('.fixed-action-btn').floatingActionButton();
 
 $(document).ready(function() {
     $('[alt="www.000webhost.com"]').parent().parent().hide();
 });
+
+const confirmAction = function(str = 'Are you sure?') {
+	document.getElementById('modal-confirm-action').open();
+	$('#modal-confirm-action').open();
+};
+// confirmAction();
 
 const updateCartBadge = function() {
 	$.ajax({
@@ -18,7 +25,7 @@ const updateCartBadge = function() {
 	});
 };
 
-$('.cart_add').click(function() {
+$('.cart-add').click(function() {
 	const id = $(this).data("id");
 	const idSelector = "#quantity" + id;
 	const quantity = Number($(idSelector).val());
@@ -169,20 +176,34 @@ const validateRegForm = function() {
 };
 validateRegForm();
 
-$('.admin-btn-delete-item').click(function() {
-	const id = $(this).data('id');
+$('#admin-btn-add-item').click(function() {
+	$('#admin-form-add-item').submit();
+});
+
+$('.admin-select-order-status').change(function() {
+	const orderID = $(this).data('order-id');
+	const statusID = $(this).val();
+	alert('changing status...');
 	$.ajax({
-		url: 'controllers/admin_item_delete.php',
+		url: 'controllers/admin_change_order_status.php',
+		data: { order_id: orderID, status_id: statusID },
 		method: 'post',
-		data: { id: id },
-		success: function() {
-			location.reload();
+		success: function(data) {
+			$(`select[data-order-id="${orderID}"] [value="${statusID}"]`).prevAll().attr('disabled','disabled');
 		}
 	});
 });
 
-$('#admin-btn-add-item').click(function() {
-	$('#admin-form-add-item').submit();
+$('[href="#view-order-details"]').click(function() {
+	const orderID = $(this).data('order-id');
+	$.ajax({
+		url: 'controllers/admin_view_order_details.php',
+		data: { order_id: orderID },
+		method: 'post',
+		success: function(data) {
+			$('#view-order-details .modal-content').html(data);
+		}
+	});
 });
 
 // $('.admin-btn-edit-item').click(function() {
@@ -212,34 +233,36 @@ $('#admin-btn-add-item').click(function() {
 // 	$('#admin-form-edit-item').attr('action',`${action}?id=${id}`);
 // });
 
-$('.admin-btn-edit-item').click(function() {
+$('[data-target="modal-edit"]').click(function() {
 	const id = $(this).data('id');
-	$('#admin-form-edit-item'+id).submit();
+	$.ajax({
+		url: 'controllers/admin_get_item_details.php',
+		method: 'post',
+		data: { id: id },
+		success: function(data) {
+			$('#modal-edit .modal-content').html(data);
+		}
+	});
+})
+
+$('.admin-btn-edit-item').click(function() {
+	$('#admin-form-edit-item').submit();
 	// location.reload();
 });
 
-$('.admin-select-order-status').change(function() {
-	const orderID = $(this).data('order-id');
-	const statusID = $(this).val();
-	alert('changing status...');
-	$.ajax({
-		url: 'controllers/admin_change_order_status.php',
-		data: { order_id: orderID, status_id: statusID },
-		method: 'post',
-		success: function(data) {
-			$(`select[data-order-id="${orderID}"] [value="${statusID}"]`).prevAll().attr('disabled','disabled');
-		}
-	});
-});
-
-$('[href="#view-order-details"]').click(function() {
-	const orderID = $(this).data('order-id');
-	$.ajax({
-		url: 'controllers/admin_view_order_details.php',
-		data: { order_id: orderID },
-		method: 'post',
-		success: function(data) {
-			$('#view-order-details .modal-content').html(data);
+$('[data-target="modal-confirm-delete-item"]').click(function() {
+	const id = $(this).data('id');
+	$('.admin-btn-delete-item').click(function() {
+		const action = $(this).data('action');
+		if (action) {
+			$.ajax({
+				url: 'controllers/admin_item_delete.php',
+				method: 'post',
+				data: { id: id },
+				success: function() {
+					location.reload();
+				}
+			});
 		}
 	});
 });

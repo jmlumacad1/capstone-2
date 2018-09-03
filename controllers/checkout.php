@@ -54,7 +54,7 @@ $transaction
 	->setInvoiceNumber(uniqid());
 
 $redirectUrls = new RedirectUrls();
-$redirectUrls->setReturnUrl(SITE_URL.'/controllers/pay.php?success=true')
+$redirectUrls->setReturnUrl(SITE_URL.'controllers/pay.php?success=true')
 	->setCancelUrl(SITE_URL.'controllers/pay.php?success=false');
 
 $payment = new Payment();

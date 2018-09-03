@@ -6,7 +6,7 @@
 </ul> -->
 <nav class="blue" role="navigation">
   <div class="nav-wrapper container">
-    <a id="logo-container" href="index.php" class="brand-logo">Book Coll&#x259;ge</a>
+    <a id="logo-container" href="index.php" class="brand-logo hide-on-small-only">Coll&aelig;ge Books</a>
     <ul class="right hide-on-med-and-down">
         <li><a href="index.php">Books</a></li>
       <?php if (!isset($logged_in) || (isset($logged_in) && $logged_in['role_id'] != 1)): ?>
@@ -35,6 +35,7 @@
     </ul>
 
     <ul class="sidenav" id="nav-mobile">
+        <li><a href="index.php">Books</a></li>
       <?php if (!isset($logged_in) || (isset($logged_in) && $logged_in['role_id'] != 1)): ?>
         <li><a href="cart_list.php">Cart<span class="badge-items"><?php 
         if (isset($_SESSION['cart'])) {

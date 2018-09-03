@@ -4,6 +4,10 @@
 	}
 
 	function get_content() {
+		global $logged_in;
+		if (!$logged_in || ($logged_in['role_id'] != 1)) {
+			echo('Unauthorized.');
+		} else {
 		global $conn; ?>
 		<table class="striped centered responsive-table">
       <thead>
@@ -64,4 +68,4 @@
 	      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
 	    </div>
 	  </div>
-<?php } require_once 'template.php'; ?>
+<?php }} require_once 'template.php'; ?>

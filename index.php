@@ -64,68 +64,24 @@
 	function admin_get_modal_add_item($conn) {
 	  $mode = 'add'; ?>
 		<!-- Modal Trigger -->
-	  <button data-target="modal-<?php echo $mode; ?>" class="btn modal-trigger">Add item</button>
+	  <!-- <button data-target="modal-<?php echo $mode; ?>" class="btn modal-trigger">Add item</button> -->
+	  <div class="fixed-action-btn">
+		  <a class="btn-floating btn-large red modal-trigger waves-effect waves-light" data-target="modal-<?php echo $mode; ?>">
+		    <i class="large material-icons">add</i>
+		  </a>
+		</div>
 
 	  <?php admin_get_modal_structure_item($conn,$mode);
 	}
 
-	function admin_get_modal_edit_item($conn,$item) {
+	function admin_get_modal_edit_item($conn) {
 	  $mode = 'edit'; ?>
 		<!-- Modal Structure -->
-	  <div id="modal-<?php echo $mode; ?><?php echo $item['id'] ?>" class="modal">
+	  <div id="modal-<?php echo $mode; ?>" class="modal">
 	    <div class="modal-content">
-	      <h4><?php echo ($mode === 'add') ? 'Add new item' : 'Edit item' ; ?></h4>
-	      <div class="row">
-					<form id="admin-form-<?php echo $mode; ?>-item<?php echo $item['id'] ?>" class="col s12" action="controllers/admin_item_<?php echo $mode; ?>.php?id=<?php echo $item['id'] ?>" method="post" enctype="multipart/form-data">
-						<div class="row">
-							<div class="input-field col s12 m6">
-								<input value="<?php echo($item['name']) ?>" name="item_name" id="item_name" type="text" class="validate">
-								<label for="item_name">Item name</label>
-							</div>
-							<div class="input-field col s12 m6">
-								<input value="<?php echo($item['price']) ?>" name="item_price" id="item_price" type="number" class="validate">
-								<label for="item_price">Item price</label>
-							</div>
-						</div>
-						<div class="row">
-							<div class="input-field col s12">
-								<select name="item_category_id">
-									<option value="" disabled>Choose your option</option>
-									<?php
-										$sql = "SELECT * FROM categorys";
-										$categorys = mysqli_query($conn, $sql);
-										foreach ($categorys as $category):
-											extract($category); ?>
-								      <option value=<?php echo $id ?><?php if ($id == $item['category_id']) {
-								      	echo " selected";
-								      } ?>><?php echo $name ?></option>
-									<?php endforeach ?>
-								</select>
-								<label>Item category</label>
-							</div>
-						</div>
-						<div class="row">
-							<div class="input-field col s12">
-								<textarea name="item_description" id="item_description" class="materialize-textarea"><?php echo $item['description']; ?></textarea>
-								<label for="item_description">Item description</label>
-							</div>
-						</div>
-						<div class="row">
-								<div class="file-field input-field col s12">
-									<div class="btn">
-										<span>Image</span>
-										<input name="item_image" type="file">
-									</div>
-									<div class="file-path-wrapper">
-										<input class="file-path validate" type="text">
-									</div>
-								</div>
-						</div>
-					</form>
-				</div>
 	    </div>
 	    <div class="modal-footer">
-	      <button data-id="<?php echo $item['id'] ?>" class="admin-btn-<?php echo $mode; ?>-item modal-close waves-effect waves-green btn-flat"><?php echo ($mode === 'add') ? 'Add to Database' : 'Save' ; ?></button>
+	      <button class="admin-btn-<?php echo $mode; ?>-item modal-close waves-effect waves-green btn-flat"><?php echo ($mode === 'add') ? 'Add to Database' : 'Save' ; ?></button>
 	    </div>
 	  </div><?php
 	}
@@ -192,6 +148,7 @@
 		<div class="col s12">
 			<?php if (isset($logged_in) && $logged_in['role_id'] == 1): ?>
 				<?php admin_get_modal_add_item($conn); ?>
+				<?php admin_get_modal_edit_item($conn); ?>
 			<?php endif ?>
 		</div>
 		<?php
@@ -213,11 +170,10 @@
 								<input placeholder="How many?" id=<?php echo "quantity".$id; ?> type="number" min=1 class="validate">
 								<label for=<?php echo "quantity".$id; ?>>Quantity</label>
 							</div>
-							<a class="waves-effect waves-light btn cart_add" data-id=<?php echo $id; ?>><i class="material-icons left">add_shopping_cart</i>Add to Cart</a>
+							<a class="waves-effect waves-light btn cart-add" data-id=<?php echo $id; ?>><i class="material-icons left">add_shopping_cart</i>Add to Cart</a>
 						<?php else: ?>
-							<button data-item='<?php echo json_encode($item) ?>' data-target="modal-edit<?php echo $id ?>" data-id=<?php echo $id ?> class="btn waves-effect waves-light modal-trigger">Edit</button>
-							<button disabled data-id=<?php echo $id ?> class="admin-btn-delete-item btn waves-effect waves-light">Delete</button>
-							<?php admin_get_modal_edit_item($conn,$item); ?>
+							<button data-item='<?php echo json_encode($item) ?>' data-target="modal-edit" data-id=<?php echo $id ?> class="btn waves-effect waves-light modal-trigger">Edit</button>
+							<button data-target="modal-confirm-delete-item" data-id=<?php echo $id ?> class="btn waves-effect waves-light modal-trigger">Delete</button>
 						<?php endif ?>
 					</div>
 				</div> <!-- end card -->
@@ -238,19 +194,19 @@
         //   }
         ?>
 		<div class="section no-pad-bot" id="index-banner">
-            <div class="container">
-              <br><br>
-              <h1 class="header center teal-text">Book Coll&#x259;ge</h1>
-              <div class="row center">
-                <h5 class="header col s12 light">A book collage of college books</h5>
-              </div>
-              <div class="row center">
-                <!--<a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal">Get Started</a>-->
-              </div>
-              <br><br>
-            
-            </div>
+      <div class="container">
+        <br><br>
+        <h1 class="header center teal-text">Coll&aelig;ge Books</h1>
+        <div class="row center">
+          <h5 class="header col s12 light">A collage of college books</h5>
         </div>
+        <div class="row center">
+          <!--<a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal">Get Started</a>-->
+        </div>
+        <br><br>
+      
+      </div>
+    </div>
 		<div class="row">
 			<div class="col l2">
 			    <?php get_content_section_sort_and_filter($conn); ?>
@@ -260,4 +216,16 @@
 				<div class="row"><?php get_content_items($conn); ?></div> <!-- end row -->
 			</div> <!-- end right col -->
 		</div> <!-- end row -->
+
+		<!-- Modal Structure -->
+	  <div id="modal-confirm-delete-item" class="modal">
+	    <div class="modal-content">
+	      <h4>Delete item</h4>
+	      <p>Are you sure?</p>
+	    </div>
+	    <div class="modal-footer">
+	      <a href="#!" class="admin-btn-delete-item modal-close waves-effect waves-green btn-flat" data-action=1>Yes</a>
+	      <a href="#!" class="admin-btn-delete-item modal-close waves-effect waves-green btn-flat" data-action=0>No</a>
+	    </div>
+	  </div>
 <?php } require_once 'template.php'; ?>
