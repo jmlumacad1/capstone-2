@@ -24,5 +24,19 @@
             alert_message('error_'.$event);
         }
     ?>
+
+    let logged_in;
+    <?php
+    global $logged_in;
+    if ($logged_in): ?>
+      logged_in = true;
+    <?php else: ?>
+      logged_in = false;
+    <?php endif ?>
+
+    $('#btn-pay-paypal').click(function() {
+      if (!logged_in) M.toast({html: 'Please login to continue.'});
+      return logged_in;
+    });
   });
 </script>

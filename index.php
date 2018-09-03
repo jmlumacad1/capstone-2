@@ -251,7 +251,7 @@
 			</div>
 	  <?php else: ?>
 		  <div class="fixed-action-btn">
-			  <a class="btn-floating btn-large blue modal-trigger waves-effect waves-light" data-target="modal-add">
+			  <a class="btn-floating btn-large blue modal-trigger waves-effect waves-light" data-target="modal-filter-sort">
 			    <i class="large material-icons">sort</i>
 			  </a>
 			</div>
