@@ -56,8 +56,22 @@
 					<a id="cart-empty" class="waves-effect waves-light btn">Empty cart</a>
 				</div>
 			</div><?php
-		} else {
-			echo "Cart is empty.";
+		} else { ?>
+			<div class="section no-pad-bot" id="index-banner">
+	      <div class="container">
+	        <br><br>
+	        <h1 class="header center red-text">Cart is empty.</h1>
+	        <div class="row center">
+	          <h5 class="header col s12 light"><a href="index.php">View books</a></h5>
+	        </div>
+	        <div class="row center">
+	          <!--<a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal">Get Started</a>-->
+	        </div>
+	        <br><br>
+	      
+	      </div>
+	    </div>
+			<?php
 		}
 	}
 
