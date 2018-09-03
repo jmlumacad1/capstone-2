@@ -120,6 +120,7 @@ const validateRegForm = function() {
 					$(usernameSelector+' .helper-text').attr('data-error','Username already exists.');
 					setInvalid(usernameSelector+' #username');
 				} else {
+					$(usernameSelector+' .helper-text').attr('data-success','Username is still available.');
 					setValid(usernameSelector+' #username');
 				}
 			});
@@ -136,7 +137,13 @@ const validateRegForm = function() {
 			setInvalid(passwordSelector+' #password');
 			errorFlag = true;
 		} else {
-			setValid(passwordSelector+' #password');
+			if (password.length >= 8 && password.length <= 50) {
+				setValid(passwordSelector+' #password');
+			} else {
+				setInvalid(passwordSelector+' #password');
+				$(passwordSelector+' .helper-text').attr('data-error','Password length must be from 8 to 50.');
+				errorFlag = true;
+			}
 		}
 
 		return errorFlag;
