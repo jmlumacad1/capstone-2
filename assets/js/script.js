@@ -259,8 +259,11 @@ $('[data-target="modal-confirm-delete-item"]').click(function() {
 				url: 'controllers/admin_item_delete.php',
 				method: 'post',
 				data: { id: id },
-				success: function() {
+				success: function(data) {
 					location.reload();
+					if (data) {
+						alert(data);
+					}
 				}
 			});
 		}
