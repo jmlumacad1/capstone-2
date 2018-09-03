@@ -65,11 +65,6 @@
 	  $mode = 'add'; ?>
 		<!-- Modal Trigger -->
 	  <!-- <button data-target="modal-<?php echo $mode; ?>" class="btn modal-trigger">Add item</button> -->
-	  <div class="fixed-action-btn">
-		  <a class="btn-floating btn-large red modal-trigger waves-effect waves-light" data-target="modal-<?php echo $mode; ?>">
-		    <i class="large material-icons">add</i>
-		  </a>
-		</div>
 
 	  <?php admin_get_modal_structure_item($conn,$mode);
 	}
@@ -119,7 +114,7 @@
 		    <label>Filter by</label>
 		  </div>
 		  <div class="col l3">
-				<button class="btn waves-effect waves-light" type="submit" name="action">Filter/Sort
+				<button class="btn waves-effect waves-light modal-close" type="submit" name="action">Go
 			    <!-- <i class="material-icons right">send</i> -->
 			  </button>
 		  </div>
@@ -182,6 +177,7 @@
 	}
 
 	function get_content() {
+		global $logged_in;
 		global $conn; ?>
 		<?php
         //   if (isset($_SESSION['error_login'])) {
@@ -207,11 +203,16 @@
       
       </div>
     </div>
+    <!-- <div class="container">
+    	<div class="row">
+	    	<div class="col s12">
+	    	</div>
+    	</div>
+    </div> -->
 		<div class="row">
-			<div class="col l2">
-			    <?php get_content_section_sort_and_filter($conn); ?>
-			</div> <!-- end left col -->
-			<div class="col l10">
+			<!-- <div class="col l2">
+			</div> --> <!-- end left col -->
+			<div class="col l12">
 				<!--<div class="row"></div>--> <!-- end row -->
 				<div class="row"><?php get_content_items($conn); ?></div> <!-- end row -->
 			</div> <!-- end right col -->
@@ -226,6 +227,45 @@
 	    <div class="modal-footer">
 	      <a href="#!" class="admin-btn-delete-item modal-close waves-effect waves-green btn-flat" data-action=1>Yes</a>
 	      <a href="#!" class="admin-btn-delete-item modal-close waves-effect waves-green btn-flat" data-action=0>No</a>
+	    </div>
+	  </div>
+
+	  <!-- floating action button -->
+	  <?php if ($logged_in && $logged_in['role_id'] == 1): ?>
+		  <div class="fixed-action-btn">
+			  <a class="btn-floating btn-large teal">
+			    <i class="large material-icons">more_vert</i>
+			  </a>
+			  <ul>
+			    <li>
+			    	<a class="btn-floating red modal-trigger waves-effect waves-light" data-target="modal-add">
+					    <i class="large material-icons">add</i>
+					  </a>
+					</li>
+			    <li>
+			    	<a class="btn-floating blue modal-trigger waves-effect waves-light" data-target="modal-filter-sort">
+					    <i class="large material-icons">sort</i>
+					  </a>
+					</li>
+			  </ul>
+			</div>
+	  <?php else: ?>
+		  <div class="fixed-action-btn">
+			  <a class="btn-floating btn-large blue modal-trigger waves-effect waves-light" data-target="modal-add">
+			    <i class="large material-icons">sort</i>
+			  </a>
+			</div>
+	  <?php endif ?>
+
+	  <!-- Modal Structure -->
+	  <div id="modal-filter-sort" class="modal">
+	    <div class="modal-content">
+	      <h4>Filter and Sort</h4>
+	      <div class="row">
+	      	<div class="col s12">
+				    <?php get_content_section_sort_and_filter($conn); ?>
+	      	</div>
+	      </div>
 	    </div>
 	  </div>
 <?php } require_once 'template.php'; ?>
