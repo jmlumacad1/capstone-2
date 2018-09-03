@@ -11,11 +11,11 @@ $sql = "
 	VALUES ('$username', '$password')
 ";
 
-if (mysqli_query($conn,$sql)) {
-	echo "success";
-} else {
-	echo mysqli_error($conn);
-}
+// if (mysqli_query($conn,$sql)) {
+// 	echo "success";
+// } else {
+// 	echo mysqli_error($conn);
+// }
 
 $_SESSION['success_register'] = "Successfully registered.";
-header('location: ../login.php');
+header('location: ../index.php');

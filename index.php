@@ -132,7 +132,7 @@
 
 	function get_content_section_sort_and_filter($conn) { ?>
 		<form>
-			<div class="input-field col s12 m6 l3">
+			<div class="input-field col s12">
 		    <select name="sort">
 		      <option value="" disabled selected></option>
 		      <option>name</option>
@@ -140,7 +140,7 @@
 		    </select>
 		    <label>Sort by</label>
 		  </div>
-			<div class="input-field col s12 m6 l3">
+			<div class="input-field col s12">
 		    <select name="order">
 		      <option value="" disabled selected></option>
 		      <option>ascending</option>
@@ -148,7 +148,7 @@
 		    </select>
 		    <label>Order</label>
 		  </div>
-			<div class="input-field col s12 m6 l3">
+			<div class="input-field col s12">
 		    <select name="filter[]" multiple>
 		      <optgroup label="Subject">
 						<?php
@@ -198,13 +198,13 @@
 		foreach ($items as $item) {
 			extract($item); ?>
 			<div class="col s12 m6 l3">
-				<div class="card large">
+				<div class="card">
 					<div class="card-image">
 						<img src="<?php echo $image; ?>">
 					</div>
 					<div class="card-content">
-						<span class="card-title"><?php echo $name; ?></span>
-						<span><?php echo $price; ?></span>
+					    <span class="card-title"><?php echo $name; ?></span>
+						<span>Php <?php echo $price; ?></span>
 						<!-- <p>some description</p> -->
 					</div>
 					<div class="card-action">
@@ -227,11 +227,36 @@
 
 	function get_content() {
 		global $conn; ?>
+		<?php
+        //   if (isset($_SESSION['error_login'])) {
+        //     echo '<span class="red-text">' . $_SESSION['error_login'] . '</span>';
+        //     // unset($_SESSION['error_login']);
+        //   }
+        //   if (isset($_SESSION['success_register'])) {
+        //     echo '<span class="green-text">' . $_SESSION['success_register'] . '</span>';
+        //     // unset($_SESSION['success_register']);
+        //   }
+        ?>
+		<div class="section no-pad-bot" id="index-banner">
+            <div class="container">
+              <br><br>
+              <h1 class="header center teal-text">Book Coll&#x259;ge</h1>
+              <div class="row center">
+                <h5 class="header col s12 light">A book collage of college books</h5>
+              </div>
+              <div class="row center">
+                <!--<a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal">Get Started</a>-->
+              </div>
+              <br><br>
+            
+            </div>
+        </div>
 		<div class="row">
 			<div class="col l2">
+			    <?php get_content_section_sort_and_filter($conn); ?>
 			</div> <!-- end left col -->
 			<div class="col l10">
-				<div class="row"><?php get_content_section_sort_and_filter($conn); ?></div> <!-- end row -->
+				<!--<div class="row"></div>--> <!-- end row -->
 				<div class="row"><?php get_content_items($conn); ?></div> <!-- end row -->
 			</div> <!-- end right col -->
 		</div> <!-- end row -->

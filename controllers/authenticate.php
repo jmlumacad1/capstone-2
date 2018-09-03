@@ -20,8 +20,8 @@ if (mysqli_num_rows($result) > 0) {
 			unset($_SESSION['cart']);
 		}
 	}
-	header('location: ../index.php');
+	$_SESSION['success_login'] = "Welcome, ".$_SESSION['logged_in']['username']."!";
 } else {
 	$_SESSION['error_login'] = "Incorrect username/password. Please login again.";
-	header('location: ../login.php');
 }
+header('location: ../index.php');

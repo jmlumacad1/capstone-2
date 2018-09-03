@@ -3,12 +3,17 @@ $(".dropdown_menu").dropdown();
 $('select').formSelect();
 $('.modal').modal();
 $('.collapsible').collapsible();
+$('.sidenav').sidenav();
+
+$(document).ready(function() {
+    $('[alt="www.000webhost.com"]').parent().parent().hide();
+});
 
 const updateCartBadge = function() {
 	$.ajax({
 		url: 'controllers/update_cart_badge.php',
 		success : function(data) {
-			$('#badge-items').html(data);
+			$('.badge-items').html(data);
 		}
 	});
 };
@@ -36,13 +41,13 @@ $('.cart-update').click(function() {
 	if (quantity <= 0 || !Number.isInteger(quantity)) {
 		alert('Please enter a positive integer.')
 	} else {
+    	const price = $('#price'+id).html();
+    	const prevQuantity = $('#quantity'+id).html();
 		$.post('controllers/cart_update.php',
-			{ id: id, quantity: quantity },
+			{ id: id, quantity: quantity, prev_qty: price*prevQuantity, price: price },
 			function(data) {
 				M.toast({html: 'Updated cart successfully!'});
 				// console.log(data);
-				const price = $('#price'+id).html();
-				const prevQuantity = $('#quantity'+id).html();
 				const prevTotal = $('#total').html();
 				$('#quantity'+id).html(quantity);
 				$('#subtotal'+id).html(quantity*price);
