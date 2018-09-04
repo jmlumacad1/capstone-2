@@ -18,7 +18,7 @@
     <?php } ?>
     
     <?php 
-        $events = ['login','register'];
+        $events = ['login','register','payment_paypal'];
         foreach ($events as $event) {
             alert_message('success_'.$event);
             alert_message('error_'.$event);

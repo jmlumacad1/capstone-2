@@ -30,7 +30,7 @@ $('.cart-add').click(function() {
 	const idSelector = "#quantity" + id;
 	const quantity = Number($(idSelector).val());
 	if (quantity <= 0 || !Number.isInteger(quantity)) {
-		alert('Please enter a positive integer.')
+		M.toast({html: 'Please enter a positive integer.'});
 	} else {
 		$.post('controllers/cart_add.php',
 			{ id: id, quantity: quantity },
@@ -46,7 +46,7 @@ $('.cart-update').click(function() {
 	const id = $(this).data("id");
 	const quantity = Number($(this).prev().val());
 	if (quantity <= 0 || !Number.isInteger(quantity)) {
-		alert('Please enter a positive integer.')
+		M.toast({html: 'Please enter a positive integer.'});
 	} else {
     	const price = $('#price'+id).html();
     	const prevQuantity = $('#quantity'+id).html();

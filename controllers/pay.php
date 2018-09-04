@@ -55,7 +55,7 @@ $sql = "INSERT INTO orders_statuss VALUES(null,$order_id,1,null)";
 mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 unset($_SESSION['cart']);
-$_SESSION['success_message'] = "Payment Successful!";
+$_SESSION['success_payment_paypal'] = "Payment Successful!";
 
 header('location: ../index.php');
 

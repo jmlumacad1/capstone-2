@@ -6,7 +6,7 @@ $name = mysqli_escape_string($conn, $_POST['item_name']);
 $description = mysqli_escape_string($conn, $_POST['item_description']);
 $price = $_POST['item_price'];
 $category_id = mysqli_escape_string($conn, $_POST['item_category_id']);
-$has_image = (file_exists($_FILES['myfile']['tmp_name']) && is_uploaded_file($_FILES['myfile']['tmp_name']));
+$has_image = (file_exists($_FILES['item_image']['tmp_name']) && is_uploaded_file($_FILES['item_image']['tmp_name']));
 if ($has_image) {
 	$image = "assets/images/".$_FILES['item_image']['name'];
 	move_uploaded_file($_FILES['item_image']['tmp_name'], "../".$image);

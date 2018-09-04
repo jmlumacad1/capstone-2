@@ -9,3 +9,15 @@ a {
 .card-image.l1,.card-image.l2,.card-image.l3,.card-image.l4,.card-image.l5,.card-image.l6,.card-image.l7,.card-image.l8,.card-image.l9,.card-image.l10,.card-image.l11,.card-image.l12 {
 	/*height: 320px;*/
 }
+
+.card-image {
+    /*height: 375px;*/
+}
+
+.card-content {
+    /*height: 150px;*/
+}
+
+.card-book {
+    min-height: 700px;
+}

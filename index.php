@@ -45,7 +45,7 @@
 								<div class="file-field input-field col s12">
 									<div class="btn">
 										<span>Image</span>
-										<input name="item_image" type="file">
+										<input name="item_image" type="file" required>
 									</div>
 									<div class="file-path-wrapper">
 										<input class="file-path validate" type="text">
@@ -150,7 +150,7 @@
 		foreach ($items as $item) {
 			extract($item); ?>
 			<div class="col s12 m6 l3">
-				<div class="card">
+				<div class="card card-book">
 					<div class="card-image">
 						<img src="<?php echo $image; ?>">
 					</div>
